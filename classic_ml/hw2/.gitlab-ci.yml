@@ -1,0 +1,36 @@
+deadline-check-hw2:
+  rules:
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == 'hw2'
+  stage: deadline_check
+  script: if [ "$(date '+%Y-%m-%d %H:%M:%S')" \< "$HW2_HARD_DEADLINE" ]; then exit 0; else echo "Deadline reached"; exit 1; fi
+
+check-changes-hw2:
+  stage: base_check
+  needs:
+    - deadline-check-hw2
+  rules:
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == 'hw2'
+  image: registry.gitlab.v-efimov.tech/vk_education/images/intro_ml_base:latest
+  script:
+    - git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - if git diff --name-only HEAD origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME | grep -v -E 'hw2/.*\.(py|ipynb)'; then exit 1; else exit 0; fi
+
+success-hw2:
+  stage: success
+  needs:
+    - check-changes-hw2
+    - flake8
+    - check-correct-branch
+  rules:
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == 'hw2'
+  image: registry.gitlab.v-efimov.tech/vk_education/images/intro_ml_base:latest
+  script:
+    - MESSAGE_FULL='%E2%9C%85%20%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B4%D0%B0%D0%BD%D0%BE%20%D0%B2%D0%BE%D0%B2%D1%80%D0%B5%D0%BC%D1%8F'
+    - MESSAGE_HALF='%E2%9A%A0%EF%B8%8F%20%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D1%81%D0%B4%D0%B0%D0%BD%D0%BE%20%D1%81%20%D0%BE%D0%BF%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC%2C%20%D0%B8%D1%82%D0%BE%D0%B3%D0%BE%D0%B2%D0%B0%D1%8F%20%D0%BE%D1%86%D0%B5%D0%BD%D0%BA%D0%B0%20%D0%B1%D1%83%D0%B4%D0%B5%D1%82%20%D1%81%D0%BD%D0%B8%D0%B6%D0%B5%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D0%BE%D0%BB%D0%BE%D0%B2%D0%B8%D0%BD%D1%83.'
+    - >
+      if [ "$(date '+%Y-%m-%d %H:%M:%S')" \< "$HW2_SOFT_DEADLINE" ];
+      then
+        curl --silent --request POST --header "PRIVATE-TOKEN: $GRADER_API_KEY" --url "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes?body=$MESSAGE_FULL";
+      else
+        curl --silent --request POST --header "PRIVATE-TOKEN: $GRADER_API_KEY" --url "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes?body=$MESSAGE_HALF";
+      fi

@@ -1,0 +1,6 @@
+FILE 2025-12-07 15:39:20,071	INFO	cache	Cache put new key:k1, value:v1, cache:[('k1', 'v1')]
+FILE 2025-12-07 15:39:20,071	INFO	cache	Cache put new key:k2, value:v2, cache:[('k2', 'v2'), ('k1', 'v1')]
+FILE 2025-12-07 15:39:20,071	INFO	cache	Cache get key:k1, cache:[('k1', 'v1'), ('k2', 'v2')], return: v1
+FILE 2025-12-07 15:39:20,071	INFO	cache	Cache put new key:k3, value:v3, cache:[('k3', 'v3'), ('k1', 'v1')]
+FILE 2025-12-07 15:39:20,071	INFO	cache	Cache put new key:k2, value:v5, cache:[('k2', 'v5'), ('k3', 'v3')]
+FILE 2025-12-07 15:39:20,071	INFO	cache	Cache get key:k2, cache:[('k2', 'v5'), ('k3', 'v3')], return: v5

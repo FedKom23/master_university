@@ -1,0 +1,2 @@
+# hse_deep_python_25_fvkomarov
+homeworks hse_deep_python vk education
