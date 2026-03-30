@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.8
+    container_name: demo-clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    environment:
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: "secret"
+
+  redis:
+    image: redis:7
+    container_name: demo-redis
+    ports:
+      - "6379:6379"
+
+  minio:
+    image: minio/minio:latest
+    container_name: demo-minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "19000:9000"
+      - "19001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+
+  minio-init:
+    image: minio/mc
+    container_name: demo-minio-init
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 3;
+      mc alias set local http://minio:9000 minio minio123;
+      mc mb -p local/demo;
+      echo 'hello,minio' > /tmp/hello.csv;
+      mc cp /tmp/hello.csv local/demo/hello.csv;
+      exit 0;
+      "

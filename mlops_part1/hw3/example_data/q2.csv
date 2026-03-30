@@ -1,0 +1,5 @@
+category,region,revenue,campaigns,brand_revenue,top_campaign_revenue,top_campaign_id,top_campaign_revenue_exact,brand_revenue_share
+auto,LATAM,0.0,1,0.0,0.0,2,0.0,0.0
+media,APAC,33.26,1,0.0,33.26,3,33.26,0.0
+retail,MEA,0.0,1,0.0,0.0,1,0.0,0.0
+travel,MEA,108.37,1,0.0,108.37,4,108.37,0.0

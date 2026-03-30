@@ -1,0 +1,58 @@
+<View>
+  <Style>
+    .card {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+    .info {flex: 1; max-width: 60%;}
+    .title {font-size: 18px; font-weight: bold; margin-bottom: 6px;}
+    .description {font-size: 14px; color: #444; margin-bottom: 6px;}
+    .price {margin-top: 8px; padding: 8px; background: #f8f9fa; border-radius: 6px; width: fit-content;}
+    .image {flex: 1; text-align: center;}
+    .link a {color: #0077cc; text-decoration: none;}
+    .link a:hover {text-decoration: underline;}
+    .block {margin-bottom: 10px;}
+  </Style>
+
+  <Header value="Категоризация ecom товаров"/>
+
+  <View className="card">
+    <View className="info">
+      <View className="block">
+        <Header value="Название"/>
+        <Text name="product_name" value="$name" className="title"/>
+      </View>
+
+      <View className="block description">
+        <Header value="Описание"/>
+        <Text name="product_description" value="$description" className="description"/>
+      </View>
+
+      <View className="block vendor">
+        <Header value="Бренд"/>
+        <Text name="vendor" value="$vendor"/>
+      </View>
+
+      <View className="block link">
+        <Header value="Ссылка на товар"/>
+        <Text name="product_url" value="$url" hyperlink="$url"/>
+      </View>
+
+      <View className="block price">
+        <Header value="Цена"/>
+        <Number name="price" toName="product_name" required="true" min="0" step="0.01"/>
+      </View>
+    </View>
+
+    <View className="block image">
+      <Header value="Изображение"/>
+      <Image name="product_image" value="$image_url" maxWidth="400px"/>
+    </View>
+  </View>
+</View>

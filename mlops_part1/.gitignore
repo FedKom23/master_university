@@ -1,0 +1,16 @@
+.idea/.gitignore
+.idea/misc.xml
+.idea/modules.xml
+.idea/production-ml-hw.iml
+.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.vscode/
+**/*.pyc
+.venv
+hw3/project_image/ch_data.json
+hw3/project_image/s3_data.json
+.env
+.idea
+.DS_Store
+.pytest_cache

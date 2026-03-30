@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1200" />
+<title>SoundMax MegaSound 2X04 — SoundMax</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;
+  --card:#0f1720;
+  --muted:#9aa4b2;
+  --accent:#7ee3d8;
+  --accent-2:#00b4d8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,-apple-system,"Helvetica Neue",Arial;color:#e6eef6;background:linear-gradient(180deg,#05070a 0%, #071018 100%);}
+.wrap{max-width:1180px;margin:36px auto;padding:20px;}
+.loading-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:var(--bg);z-index:1200}
+.spinner{width:56px;height:56px;border-radius:50%;border:5px solid rgba(255,255,255,0.06);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-bottom:14px}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.brand-mark{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#031018;font-weight:800;font-size:18px}
+.site-title{font-weight:700;font-size:18px}
+.card{background:linear-gradient(180deg,var(--card),#0b1220);border-radius:14px;padding:22px;box-shadow:0 12px 40px rgba(2,6,23,0.6);display:grid;grid-template-columns:460px 1fr;gap:28px;align-items:start;min-height:900px;}
+.gallery { overflow: hidden; cursor: zoom-in; }
+#main-image { width: 100%; border-radius: 12px; object-fit: cover; max-height: 420px; transition: transform 0.3s ease; }
+#main-image:hover { transform: scale(1.05); }
+.meta-area h1{margin:0;font-size:24px;font-weight:700}
+.meta-area .brand{margin-top:6px;color:#7ee3d8;font-weight:600;font-size:16px;}
+.price{font-size:28px;color:var(--accent);font-weight:800;margin-top:12px;}
+.controls{margin-top:18px;display:flex;gap:12px;align-items:center}
+.btn-buy{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021;border:0;padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer}
+#favBtn{font-size:28px;color:var(--accent);background:none;border:none;cursor:pointer;transition:transform .2s;}
+#favBtn:hover{transform:scale(1.2);}
+.rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.rec-card{background:rgba(255,255,255,0.02);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;opacity:0;transform:translateY(20px);transition:opacity 0.5s ease, transform 0.5s ease;}
+.rec-card.visible{opacity:1;transform:translateY(0);}
+.rec-thumb img{width:84px;height:64px;border-radius:8px;object-fit:cover}
+.reviews{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.review{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;color:var(--muted);font-size:13px;opacity:0;transform:translateY(20px);transition:opacity 0.5s ease, transform 0.5s ease;}
+.review.visible{opacity:1;transform:translateY(0);}
+.review .who{color:#e6eef6;font-weight:600;margin-bottom:6px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.72);display:none;align-items:center;justify-content:center;z-index:1500}
+.modal{background:linear-gradient(180deg,#071018,#081425);padding:18px;border-radius:12px;max-width:520px;position:relative}
+.modal .close-x{position:absolute;right:14px;top:10px;font-size:18px;cursor:pointer;color:var(--muted)}
+.heart-fly {position: fixed;font-size: 24px;color: #ff4b5c;pointer-events: none;animation: flyUp 1s ease-out forwards;z-index: 2000;}
+@keyframes flyUp {0% {transform: translate(0,0) scale(1);opacity:1;}50%{transform: translate(0,-50px) scale(1.3);opacity:0.8;}100%{transform: translate(0,-120px) scale(0.8) opacity:0;}}
+#cartToast {position: fixed;bottom: 30px;right: 30px;background: linear-gradient(90deg, #7ee3d8, #00b4d8);color: #021;padding: 14px 20px;border-radius: 12px;font-weight: 700;box-shadow: 0 8px 20px rgba(2,6,23,0.5);opacity:0;transform: translateY(20px);pointer-events:none;transition: opacity 0.5s ease, transform 0.5s ease;z-index:2000;}
+#cartToast.show {opacity:1;transform: translateY(0);}
+.desc{margin-top:14px;color:#cfe6ef;line-height:1.5;}
+.desc.visible{display:block;}
+.tab-section{margin-top:30px;border-top:1px solid #1b1f2b;padding-top:20px;}
+.tabs{display:flex;gap:12px;margin-bottom:12px;}
+.tab-btn{padding:8px 16px;background:rgba(255,255,255,0.05);border:none;color:#cfe6ef;cursor:pointer;border-radius:8px;transition:0.2s}
+.tab-btn.active{background:var(--accent);color:#021;font-weight:700;}
+.tab-content{color:#cfe6ef;line-height:1.5;}
+.tab-content table{width:100%;border-collapse:collapse;}
+.tab-content td{padding:8px;border:1px solid #1b1f2b;}
+.fade-in-section {opacity:0; transform:translateY(20px); transition:opacity 0.6s ease-out, transform 0.6s ease-out;}
+.fade-in-section.visible {opacity:1; transform:translateY(0);}
+#imgLightbox {display: none; position: fixed; inset: 0; background: rgba(0,0,0,0); justify-content: center; align-items: center; z-index: 2000; cursor: zoom-out; transition: background 0.3s ease, opacity 0.3s ease; opacity: 0;}
+#imgLightbox img {max-width: 90%; max-height: 90%; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.8); transform: scale(0.95); transition: transform 0.3s ease;}
+#imgLightbox.visible {display: flex; opacity: 1; background: rgba(0,0,0,0.85);}
+#imgLightbox.visible img { transform: scale(1); }
+#imgLightbox img:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+<div class="loading-screen" id="loadingScreen">
+  <div class="spinner"></div>
+  <div>Подгружаем товар…</div>
+</div>
+
+<div class="wrap" id="page" style="display:none;">
+  <div class="topbar">
+    <div class="brand-mark">SM</div>
+    <div class="site-title">Premium Audio</div>
+  </div>
+
+  <article class="card">
+    <div class="gallery">
+      <img id="main-image" src="images/soundmax.png" alt="SoundMax">
+    </div>
+    <div class="meta-area">
+      <h1 id="productTitle">SoundMax MegaSound 2X04</h1>
+      <div class="brand">SoundMax</div>
+      <div class="price">9218 ₽</div>
+      <div class="controls">
+        <button class="btn-buy" id="buyBtn">Добавить в корзину</button>
+        <button id="favBtn">♡</button>
+      </div>
+
+      <section class="tab-section">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="desc">Описание</button>
+          <button class="tab-btn" data-tab="specs">Характеристики</button>
+          <button class="tab-btn" data-tab="brand">Бренд</button>
+        </div>
+        <div class="tab-content" id="tabContent">
+          <div id="descTab">
+            <p class="desc visible" id="description">
+              Мощные наушники с улучшенным басом и кристально чистым звучанием. Идеально для любителей EDM и хип-хопа.
+            </p>
+          </div>
+          <div id="specsTab" style="display:none">
+            <table>
+              <tr><td>Тип</td><td>Беспроводные наушники</td></tr>
+              <tr><td>Шумоподавление</td><td>Активное</td></tr>
+              <tr><td>Время работы</td><td>До 35 часов</td></tr>
+              <tr><td>Вес</td><td>300 г</td></tr>
+            </table>
+          </div>
+          <div id="brandTab" style="display:none">
+            <h4 id="brandNameTab">SoundMax</h4>
+            <p>SoundMax — это легендарный бренд в мире аудиотехники, специализирующийся на создании мощных звуковых решений с акцентом на глубокие басы и динамичный звук. Более 20 лет компания устанавливает стандарты качества для настоящих ценителей музыки, особенно в жанрах EDM, хип-хоп и рок. Инженеры SoundMax уделяют особое внимание проработке низких частот, создавая неповторимый звуковой ландшафт, который чувствуется каждой клеткой тела.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section fade-in-section" id="recSection">
+        <h3>Рекомендуем также</h3>
+        <div class="rec-grid" id="recGrid"></div>
+      </section>
+
+      <section class="section fade-in-section" id="reviewsSection">
+        <h3>Отзывы покупателей</h3>
+        <div class="reviews" id="reviewsGrid"></div>
+      </section>
+    </div>
+  </article>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="close-x" id="modalClose">✕</div>
+    <h2>Специальное предложение</h2>
+    <p id="promoText">Ваш промокод: —</p>
+    <div style="text-align:right;margin-top:8px">
+      <button class="btn-buy" id="modalOk">Ок</button>
+    </div>
+  </div>
+</div>
+
+<div id="cartToast">Товар добавлен в корзину!</div>
+<div id="imgLightbox"><img id="lightboxImg" src="" alt=""></div>
+
+<script>
+const seedStr = 'product2fixedseed';
+function hash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0;}
+function promoCode(seed){const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';let code='';let h=hash(seed+'-c');for(let i=0;i<7;i++){code+=chars[h%chars.length];h=Math.floor(h/chars.length);}return code;}
+
+function randomLCG(seed){let x=hash(seed);return function(max){x=(Math.imul(48271,x)%0x7fffffff);return x%max;}}
+const loadRand = randomLCG(seedStr+'-load');
+const loadDelay = 1500 + loadRand(1000);
+
+setTimeout(()=>{
+  document.getElementById('loadingScreen').style.display='none';
+  document.getElementById('page').style.display='block';
+
+  const recsFixed = [
+    { title: 'AudioFlow Bass Boost', img: 'images/bass_boost.png' },
+    { title: 'AudioFlow NoiseBlock', img: 'images/noise_block.png' },
+    { title: 'AudioFlow MiniPods', img: 'images/minipods.jpeg' },
+  ];
+  const recGrid = document.getElementById('recGrid');
+  const randRec = randomLCG(seedStr+'-rec');
+  const recsShuffled = recsFixed.slice();
+  recsShuffled.sort(()=>randRec(1000)-500);
+  recsShuffled.forEach(r=>{
+    const div = document.createElement('div');
+    div.className='rec-card';
+    div.innerHTML=`<div class="rec-thumb"><img src="${r.img}" alt="${r.title}"></div><div>${r.title}</div>`;
+    recGrid.appendChild(div);
+  });
+
+  const reviews = [
+    { who: 'Алексей', text: 'Отличные наушники! Звук чистый, басы насыщенные.' },
+    { who: 'Марина', text: 'Очень удобные, держатся долго, шумоподавление супер.' },
+    { who: 'Игорь', text: 'Беспроводное подключение мгновенное, рекомендую.' },
+  ];
+  const reviewsGrid = document.getElementById('reviewsGrid');
+  reviews.forEach(r=>{
+    const div = document.createElement('div');
+    div.className='review';
+    div.innerHTML=`<div class="who">${r.who}</div><div>${r.text}</div>`;
+    reviewsGrid.appendChild(div);
+  });
+
+  const modal = document.getElementById('modalBackdrop');
+  const promoTextEl = document.getElementById('promoText');
+  promoTextEl.textContent = `Ваш промокод: ${promoCode(seedStr)}`;
+  modal.style.display = 'flex';
+
+  const showPage = () => {
+    modal.style.display = 'none';
+  };
+
+  document.getElementById('modalClose').onclick = showPage;
+  document.getElementById('modalOk').onclick = showPage;
+
+}, loadDelay);
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.getElementById('descTab').style.display = tab==='desc'?'block':'none';
+    document.getElementById('specsTab').style.display = tab==='specs'?'block':'none';
+    document.getElementById('brandTab').style.display = tab==='brand'?'block':'none';
+  };
+});
+
+const favBtn = document.getElementById('favBtn');
+const favKey = 'product-fav-'+seedStr;
+let isFav = localStorage.getItem(favKey)==='true';
+favBtn.textContent = isFav?'❤️':'♡';
+favBtn.onclick=()=>{
+  isFav=!isFav;
+  localStorage.setItem(favKey,isFav);
+  favBtn.textContent = isFav?'❤️':'♡';
+  if(isFav){
+    const heart = document.createElement('div');
+    heart.className='heart-fly';
+    heart.textContent='❤️';
+    const rect=favBtn.getBoundingClientRect();
+    heart.style.left=rect.left+rect.width/2+'px';
+    heart.style.top=rect.top+'px';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1000);
+  }
+};
+
+const cartToast = document.getElementById('cartToast');
+document.getElementById('buyBtn').onclick=()=>{
+  cartToast.classList.add('show');
+  setTimeout(()=>{cartToast.classList.remove('show');},2000);
+};
+
+const fadeSections=document.querySelectorAll('.fade-in-section');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      const cards = entry.target.querySelectorAll('.rec-card,.review');
+      cards.forEach((c,i)=>setTimeout(()=>c.classList.add('visible'),i*150));
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:0.2});
+fadeSections.forEach(section=>observer.observe(section));
+
+const mainImg = document.getElementById('main-image');
+const lb = document.getElementById('imgLightbox');
+const lbImg = document.getElementById('lightboxImg');
+mainImg.onclick=()=>{
+  lbImg.src=mainImg.src;
+  lb.classList.add('visible');
+};
+lb.onclick=()=>{ lb.classList.remove('visible'); }
+</script>
+<footer style="text-align:center; color:#7aa8b8; font-size:13px; margin-top:40px; padding:12px 0;">
+  &copy; Страница для курса по MLOps
+</footer>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[[kaggle]]
+team_name = "Fedor Komarov"
+
+[[mlflow]]
+s3_path = "f.komarov/mlflow"
+experiment_id = "108300547727376435"
+
+[[label_studio]]
+s3_path = "f.komarov/labelstudio"
